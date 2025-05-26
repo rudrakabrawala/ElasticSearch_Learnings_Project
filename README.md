@@ -83,8 +83,8 @@ elasticsearch/
 
 ### Prerequisites
 - Python 3.8+
-- ElasticSearch 8.0+
-- Required Python packages (see [requirements.txt](requirements.txt))
+- ElasticSearch 7.17.4
+- Docker (for running ElasticSearch)
 
 ### Installation
 
@@ -99,10 +99,12 @@ cd ElasticSearch_Learnings_Project
 pip install -r requirements.txt
 ```
 
-3. Start ElasticSearch:
+3. Start ElasticSearch using Docker:
 ```bash
-# Make sure ElasticSearch is running on localhost:9200
-# Or update the host/port in the client initialization
+docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 \
+    -e "discovery.type=single-node" \
+    -e "xpack.security.enabled=false" \
+    docker.elastic.co/elasticsearch/elasticsearch:7.17.4
 ```
 
 ### Basic Usage
@@ -112,7 +114,7 @@ pip install -r requirements.txt
 from elasticsearch.clients.sync_client import EcommerceElasticClient
 
 # Create client instance
-client = EcommerceElasticClient(host='localhost', port=9200)
+client = EcommerceElasticClient()
 ```
 
 2. Create the product index:
